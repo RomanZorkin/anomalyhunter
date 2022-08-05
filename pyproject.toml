@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "anomalyhunter"
+version = "0.1.0"
+description = ""
+authors = ["RomanZorkin <zorkin.roman@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.11"
+pandas = "^1.4.3"
+Flask = "^2.2.1"
+openpyxl = "^3.0.10"
+xlrd = "^2.0.1"
+scipy = "^1.9.0"
+matplotlib = "^3.5.2"
+seaborn = "^0.11.2"
+numpy = "^1.23.1"
+ipython = "^8.4.0"
+ipykernel = "^6.15.1"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.971"
+pylint = "^2.14.5"
+wemake-python-styleguide = "^0.16.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
