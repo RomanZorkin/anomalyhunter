@@ -1,1 +1,22 @@
-hello
+{% extends "base.html" %}
+
+{% block content %}
+<html>  
+    <body>
+        <div class="card">
+            <h5 class="card-header">Загрузите и отправте файл для обработки на сервер</h5>
+            <div class="card-body">
+                {{ form.hidden_tag() }}
+                <form action="{{ url_for('index.index') }}" enctype="multipart/form-data" method="post">
+                    <div class="form-group">
+                        {{ form.file }}
+                    </div>
+                    <p></p>
+                    <button type="submit" class="btn btn-success">Отправить</button>
+                </form>
+            </div>
+        </div>
+        <p></p>        
+</body>
+</html>
+{% endblock %}

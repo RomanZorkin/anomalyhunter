@@ -17,6 +17,7 @@ numpy = "^1.23.1"
 ipython = "^8.4.0"
 ipykernel = "^6.15.1"
 pydantic = "^1.9.1"
+Flask-WTF = "^1.0.1"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.971"
