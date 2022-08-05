@@ -8,6 +8,7 @@ class AppConfig(BaseModel):
     app_port: int
     debug: bool
     secret_key: str
+    upload_dir = 'service/data/import'
 
 
 def load_from_env() -> AppConfig:

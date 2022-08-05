@@ -1,7 +1,11 @@
+import logging
+
 from service import config
 from service.app import create_app
 
 app_config = config.load_from_env()
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 def run() -> None:
