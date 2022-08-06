@@ -1,22 +1,35 @@
 import os
+from pathlib import Path
 
 from pydantic import BaseModel
 
 
-class AppConfig(BaseModel):
+class WebConfig(BaseModel):
     app_host: str
     app_port: int
     debug: bool
     secret_key: str
-    upload_dir = 'service/data/import'
+
+
+class PathConfig(BaseModel):
+    upload_dir = Path('service/data/import')
+    export_dir = Path('service/data/export')
+
+
+class AppConfig(BaseModel):
+    web: WebConfig
+    path: PathConfig
 
 
 def load_from_env() -> AppConfig:
     return AppConfig(
-        app_host=os.environ['APP_HOST'],
-        app_port=int(os.environ['APP_PORT']),
-        debug=os.getenv('DEBUG', 'False'),
-        secret_key=os.environ['SECRET_KEY'],
+        web=WebConfig(
+            app_host=os.environ['APP_HOST'],
+            app_port=int(os.environ['APP_PORT']),
+            debug=os.getenv('DEBUG', 'False'),
+            secret_key=os.environ['SECRET_KEY'],
+        ),
+        path=PathConfig(),
     )
 
 

@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from flask import Blueprint, redirect, render_template, request, url_for
 
 from service import config
@@ -7,7 +5,7 @@ from service.forms.upload import FileForm
 
 app_config = config.load_from_env()
 view = Blueprint('index', __name__)
-upload_dir = Path(app_config.upload_dir)
+upload_dir = app_config.path.upload_dir
 
 
 @view.route('/', methods=['GET', 'POST'])
