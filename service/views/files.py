@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 view = Blueprint('files', __name__)
 
 
-@view.route('/', methods=['GET', 'POST'])
+@view.get('/')
 def files_list():
     files = index.getfiles()
     file_list = [file.dict() for file in files]
@@ -18,3 +18,8 @@ def files_list():
         'files.html',
         file_list=file_list,
     )
+
+
+@view.get('/card')
+def file_card():
+    return render_template('file_card.html')
