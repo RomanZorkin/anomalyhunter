@@ -3,4 +3,4 @@ from flask_wtf.file import FileField
 
 
 class FileForm(FlaskForm):
-    file = FileField()    
+    file = FileField()

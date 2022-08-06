@@ -9,8 +9,9 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def run() -> None:
+    web_config = app_config.web
     app = create_app()
-    app.run(host=app_config.app_host, port=app_config.app_port, debug=app_config.debug)
+    app.run(host=web_config.app_host, port=web_config.app_port, debug=web_config.debug)
 
 
 if __name__ == '__main__':
