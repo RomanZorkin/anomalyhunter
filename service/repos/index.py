@@ -1,5 +1,5 @@
-import logging
 import datetime
+import logging
 from pathlib import Path
 
 from service import config
