@@ -13,6 +13,7 @@ class WebConfig(BaseModel):
 
 class PathConfig(BaseModel):
     upload_dir = Path('service/data/import')
+    export_dir = Path('service/data/export')
 
 
 class AppConfig(BaseModel):
