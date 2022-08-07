@@ -23,9 +23,10 @@ def files_list():
 @view.get('/card')
 def file_card():
     filename = request.args.get('filename')
+    suffix = request.args.get('suffix')
 
-    if filename:
-        file_data = files.internal_data(filename)
+    if filename and suffix:
+        file_data = files.internal_data(filename, suffix)
 
     return render_template(
         'file_card.html',

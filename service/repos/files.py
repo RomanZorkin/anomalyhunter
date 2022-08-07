@@ -10,8 +10,8 @@ app_config = config.load_from_env()
 import_dir = app_config.path.upload_dir
 
 
-def internal_data(filename: str) -> schemas.FileData:
-    excel_file = import_dir / f'{filename}.xlsx'
+def internal_data(filename: str, suffix: str) -> schemas.FileData:
+    excel_file = import_dir / f'{filename}{suffix}'
     fonds_frame = pd.read_excel(excel_file)
     return schemas.FileData(
         columns=list(fonds_frame.columns),
