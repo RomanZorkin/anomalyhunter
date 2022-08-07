@@ -14,6 +14,7 @@ class WebConfig(BaseModel):
 class PathConfig(BaseModel):
     upload_dir = Path('service/data/import')
     export_dir = Path('service/data/export')
+    weights_dir = Path('service/data/weights')
 
 
 class AppConfig(BaseModel):
