@@ -25,9 +25,10 @@ def file_card():
     filename = request.args.get('filename')
     suffix = request.args.get('suffix')
 
-    if filename and suffix:
-        file_data = files.internal_data(filename, suffix)
+    if not (filename and suffix):
+        return render_template('mistake.html')
 
+    file_data = files.internal_data(filename, suffix)
     return render_template(
         'file_card.html',
         columns=file_data.columns,
@@ -37,4 +38,13 @@ def file_card():
 
 @view.get('/hunter')
 def anomaly_hunter():
+    filename = request.args.get('filename')
+    suffix = request.args.get('suffix')
+
+    if not (filename and suffix):
+        return render_template('mistake.html')
+
+    if not files.find_anomaly(filename, suffix):
+        return render_template('mistake.html')
+
     return redirect(url_for('index.index'))
