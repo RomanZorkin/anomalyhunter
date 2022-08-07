@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, redirect, render_template, request, url_for
 
 from service.repos import files, index
 
@@ -33,3 +33,8 @@ def file_card():
         columns=file_data.columns,
         data=file_data.data,
     )
+
+
+@view.get('/hunter')
+def anomaly_hunter():
+    return redirect(url_for('index.index'))
