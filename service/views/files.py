@@ -1,8 +1,9 @@
 import logging
 from pathlib import Path
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 
+from service import config
 from service.repos import files, index
 
 logger = logging.getLogger(__name__)
@@ -23,8 +24,8 @@ def files_list():
 
 @view.get('/card')
 def file_card():
-    file = Path('service/data/import/ОС.xlsx')
-    file_data = files.internal_data(file)
+    filename = request.args.get('filename')
+    file_data = files.internal_data(filename)
     return render_template(
         'file_card.html',
         columns=file_data.columns,

@@ -1,5 +1,4 @@
 import logging
-from pathlib import Path
 
 import pandas as pd
 
@@ -9,10 +8,10 @@ logger = logging.getLogger(__name__)
 app_config = config.load_from_env()
 
 import_dir = app_config.path.upload_dir
-file = import_dir / 'ОС.xlsx'
 
 
-def internal_data(excel_file: Path) -> schemas.FileData:
+def internal_data(filename: str) -> schemas.FileData:
+    excel_file = import_dir / f'{filename}.xlsx'
     fonds_frame = pd.read_excel(excel_file)
     return schemas.FileData(
         columns=list(fonds_frame.columns),
