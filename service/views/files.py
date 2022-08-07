@@ -12,8 +12,8 @@ view = Blueprint('files', __name__)
 
 @view.get('/')
 def files_list():
-    files = index.getfiles()
-    file_list = [file.dict() for file in files]
+    data_files = index.getfiles()
+    file_list = [file.dict() for file in data_files]
     logger.debug(file_list)
     return render_template(
         'files.html',
