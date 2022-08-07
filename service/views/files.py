@@ -1,7 +1,6 @@
 import logging
-from pathlib import Path
 
-from flask import Blueprint, render_template
+from flask import Blueprint, redirect, render_template, request, url_for
 
 from service.repos import files, index
 
@@ -23,10 +22,29 @@ def files_list():
 
 @view.get('/card')
 def file_card():
-    file = Path('service/data/import/ОС.xlsx')
-    file_data = files.internal_data(file)
+    filename = request.args.get('filename')
+    suffix = request.args.get('suffix')
+
+    if not (filename and suffix):
+        return render_template('mistake.html')
+
+    file_data = files.internal_data(filename, suffix)
     return render_template(
         'file_card.html',
         columns=file_data.columns,
         data=file_data.data,
     )
+
+
+@view.get('/hunter')
+def anomaly_hunter():
+    filename = request.args.get('filename')
+    suffix = request.args.get('suffix')
+
+    if not (filename and suffix):
+        return render_template('mistake.html')
+
+    if not files.find_anomaly(filename, suffix):
+        return render_template('mistake.html')
+
+    return redirect(url_for('index.index'))
