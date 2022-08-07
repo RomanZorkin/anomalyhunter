@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 
 from service import config, schemas
-from service.hunter import weights
+from service.hunter import handler
 
 logger = logging.getLogger(__name__)
 app_config = config.load_from_env()
@@ -22,7 +22,7 @@ def internal_data(filename: str, suffix: str) -> schemas.FileData:
 
 def find_anomaly(filename: str, suffix: str) -> bool:
 
-    if not weights.get_weights(filename, suffix):
+    if not handler.hunt(filename, suffix):
         return False
 
     return True
