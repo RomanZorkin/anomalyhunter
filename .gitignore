@@ -131,3 +131,4 @@ dmypy.json
 # excel extensions
 *.xlsx
 *.ods
+*.csv
