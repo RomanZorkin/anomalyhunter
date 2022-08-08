@@ -14,7 +14,6 @@ weights_dir = app_config.path.utility_dir
 
 word_depth = 6
 row_counter = 0
-col_counter = 0
 grade = 100
 level = 1
 
@@ -76,7 +75,9 @@ def create_csv(weights: pd.DataFrame, precision: float, excel_file: Path, ind: s
     weights[weights[:] > precision].to_csv(excel_weights, sep=';', index_label=ind)  # noqa: WPS221
 
 
-def create_weights(excel_file: Path, precision: float, ind: str, asset_name: str) -> bool:
+def create_weights(
+    excel_file: Path, precision: float, ind: str, asset_name: str, sheet: str,
+) -> bool:
     """Базовая функция для подсчета весов совпадения пар наименоваий.
 
     Аргументы:
@@ -89,7 +90,7 @@ def create_weights(excel_file: Path, precision: float, ind: str, asset_name: str
         bool - возвращает True если подсчитаны веса совпадений и сохранен файл с их значениями
     """
     start = time()
-    frame = pd.read_excel(excel_file, index_col='№ п/п', sheet_name='TDSheet')
+    frame = pd.read_excel(excel_file, index_col='№ п/п', sheet_name=sheet)
     weights = count_weights(frame, asset_name)
     frame_time = time() - start
 

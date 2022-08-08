@@ -23,8 +23,9 @@ def control_frame(upload_file: Path, upload_frame: pd.DataFrame, compare_col: st
 
     okof = pd.DataFrame(columns=range(word_count), index=range(word_count))
     okof.iloc[:word_count] = upload_frame[compare_col]
-    okof.to_csv(okof_file, sep=';')
-    return okof, word_count
+    okof.to_csv(okof_file, sep=';', index_label='ind')
+    control = pd.read_csv(okof_file, sep=';', index_col='ind')
+    return control, word_count
 
 
 def unit_rows(clean_index: pd.DataFrame) -> pd.DataFrame:
@@ -66,6 +67,7 @@ def get_dubl(filename: str, precision: float, word_count: int, ind: str) -> pd.D
 
     clean_frame = unit_rows(clean_index)
     clean_frame.to_csv(dubl, sep=';', index_label=ind)
+    clean_frame = pd.read_csv(dubl, sep=';', index_col=ind)
 
     # Создается маска значений весов отличных от nan
     mask = weights.notnull()
@@ -84,26 +86,32 @@ def find_dif(control: pd.DataFrame, control_mask: pd.DataFrame, word_count: int)
 def create_export(filename: str, mistake: list[int], clean_frame: pd.DataFrame, upload_frame: pd.DataFrame):
     export_file = export_dir / f'anomaly_{filename}.xlsx'
 
-    m_ar = np.array(mistake)
+    mistake_arr = np.array(mistake)
     mur = pd.DataFrame()
-    logger.debug(m_ar)
-    for num, i in enumerate(m_ar):
-        logger.debug(i)
+    
+    with ExcelWriter(export_file, mode='w') as writer:
+        mur.to_excel(writer, sheet_name='лист')
+
+    logger.debug(mistake_arr)
+    for num, name_ind in enumerate(mistake_arr):
+        logger.debug(name_ind)
         logger.debug(clean_frame)
-        answer = clean_frame.loc[[i]].T.dropna().iloc[:, 0].to_list()
+        answer = clean_frame.loc[[name_ind]].T.dropna().iloc[:, 0].to_list()
         logger.debug(answer)
         logger.debug(upload_frame)
-        mur = upload_frame.loc[upload_frame['ind'][answer]]
+        mur = upload_frame.loc[answer]
 
         with ExcelWriter(export_file, mode='a') as writer:
             mur.to_excel(writer, sheet_name=f'лист {num}')
 
 
-def get_anomaly(filename: str, suffix: str, sheet: str, compare_col: str, precision: float, ind: str) -> bool:
+def get_anomaly(
+    filename: str, suffix: str, sheet: str, compare_col: str, precision: float, ind: str,
+) -> bool:
     upload_file = upload_dir / f'{filename}{suffix}'
 
     xl = pd.ExcelFile(upload_file)
-    upload_frame = xl.parse(sheet, index_col=ind)
+    upload_frame = xl.parse(sheet)
 
     control, word_count = control_frame(upload_file, upload_frame, compare_col)
     mask, clean_frame = get_dubl(filename, precision, word_count, ind)
