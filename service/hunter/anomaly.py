@@ -14,7 +14,9 @@ dirs = config.load_from_env().path
 upload_dir, export_dir, utility_dir = dirs.upload_dir, dirs.export_dir, dirs.utility_dir
 
 
-def control_frame(upload_file: Path, upload_frame: pd.DataFrame, compare_col: str) -> tuple[pd.DataFrame, int]:
+def control_frame(
+    upload_file: Path, upload_frame: pd.DataFrame, compare_col: str, ind: str,
+) -> tuple[pd.DataFrame, int]:
     """Создание фрейма характеристики сравнения кол-во наименований * кол-во наименоаний."""
 
     okof_file = utility_dir / f'compare_{upload_file.stem}.csv'
@@ -23,8 +25,8 @@ def control_frame(upload_file: Path, upload_frame: pd.DataFrame, compare_col: st
 
     okof = pd.DataFrame(columns=range(word_count), index=range(word_count))
     okof.iloc[:word_count] = upload_frame[compare_col]
-    okof.to_csv(okof_file, sep=';', index_label='ind')
-    control = pd.read_csv(okof_file, sep=';', index_col='ind')
+    okof.to_csv(okof_file, sep=';', index_label=ind)
+    control = pd.read_csv(okof_file, sep=';', index_col=ind)
     return control, word_count
 
 
@@ -94,11 +96,11 @@ def create_export(filename: str, mistake: list[int], clean_frame: pd.DataFrame, 
 
     logger.debug(mistake_arr)
     for num, name_ind in enumerate(mistake_arr):
-        logger.debug(name_ind)
-        logger.debug(clean_frame)
+        #logger.debug(name_ind)
+        #logger.debug(clean_frame)
         answer = clean_frame.loc[[name_ind]].T.dropna().iloc[:, 0].to_list()
-        logger.debug(answer)
-        logger.debug(upload_frame)
+        #logger.debug(answer)
+        #logger.debug(upload_frame)
         mur = upload_frame.loc[answer]
 
         with ExcelWriter(export_file, mode='a') as writer:
@@ -113,7 +115,7 @@ def get_anomaly(
     xl = pd.ExcelFile(upload_file)
     upload_frame = xl.parse(sheet)
 
-    control, word_count = control_frame(upload_file, upload_frame, compare_col)
+    control, word_count = control_frame(upload_file, upload_frame, compare_col, ind)
     mask, clean_frame = get_dubl(filename, precision, word_count, ind)
     control_mask = control[mask]
     dif_compare = find_dif(control, control_mask, word_count)
