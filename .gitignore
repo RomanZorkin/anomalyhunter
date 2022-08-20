@@ -131,3 +131,6 @@ dmypy.json
 # excel extensions
 *.xlsx
 *.ods
+*.csv
+нфа.rar
+service/data/export/.~lock.anomaly_ОС1c1000.xlsx#
