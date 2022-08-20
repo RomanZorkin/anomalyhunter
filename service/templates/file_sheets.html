@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<table class="table table-hover table-dark">
+    <thead>
+      <tr>
+        {% for sheet in sheets %}
+        <th scope="col">ЛИСТ EXCEL</th>
+        {% endfor %}        
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for sheet in sheets %}       
+        <td><a href="{{ url_for('files.file_settings') }}?filename={{ file.name }}&suffix={{ file.suffix }}&sheet={{ sheet }}">{{ sheet }}</a></td>
+        {% endfor %}        
+      </tr>      
+    </tbody>
+  </table>
+
+выбор страницы
+
+выбор диапазона чтения таблицы
+
+выбор колонки наименований
+
+выбор колонки для сравнения (проверки) значений
+
+точность совпадения наименований (от 0 до 1, где 1 это 100% совпадение)
+
+
+{% endblock %}

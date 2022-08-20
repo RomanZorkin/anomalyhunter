@@ -16,3 +16,10 @@ class ImportFiles(BaseModel):
 class FileData(BaseModel):
     columns: list[Any]
     data: list[dict[str, Any]]
+
+
+class FileSettings(BaseModel):
+    sheet: str
+    base_column: str
+    compare_column: str
+    precision: float
