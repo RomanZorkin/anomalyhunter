@@ -21,8 +21,10 @@ def internal_data(filename: str, suffix: str) -> schemas.FileData:
 
 
 def find_anomaly(filename: str, suffix: str) -> bool:
-
     if not handler.hunt(filename, suffix):
         return False
-
     return True
+
+
+def get_sheets(filename: str, suffix: str) -> list:
+    pass
