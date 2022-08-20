@@ -85,8 +85,10 @@ def find_dif(control: pd.DataFrame, control_mask: pd.DataFrame, word_count: int)
     return control.query(f"index not in {dubl}")
 
 
-def create_export(filename: str, mistake: list[int], clean_frame: pd.DataFrame, upload_frame: pd.DataFrame):
-    export_file = export_dir / f'anomaly_{filename}.xlsx'
+def create_export(
+    filename: str, mistake: list[int], clean_frame: pd.DataFrame, upload_frame: pd.DataFrame, compare_col: str,
+):
+    export_file = export_dir / f'anomaly_{compare_col}_{filename}.xlsx'
 
     mistake_arr = np.array(mistake)
     mur = pd.DataFrame()
@@ -123,5 +125,5 @@ def get_anomaly(
     mistake = list(set(list(clean_frame.index)) & set(list(dif_compare.index)))
     mistake.sort()
 
-    create_export(filename, mistake, clean_frame, upload_frame)
+    create_export(filename, mistake, clean_frame, upload_frame, compare_col)
     return True

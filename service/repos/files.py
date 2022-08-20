@@ -26,14 +26,20 @@ def internal_data(filename: str, suffix: str) -> schemas.FileData:
 def short_data(filename: str, suffix: str, sheet: str) -> schemas.FileData:
     excel_file = import_dir / f'{filename}{suffix}'
     fonds_frame = pd.read_excel(excel_file, sheet_name=sheet)
+    short_frame = fonds_frame.head(5)
     return schemas.FileData(
-        columns=list(fonds_frame.columns),
-        data=fonds_frame.to_dict('records'),
+        columns=list(short_frame.columns),
+        data=short_frame.to_dict('records'),
     )
 
 
 def find_anomaly(filename: str, suffix: str) -> bool:
-    if not handler.hunt(filename, suffix):
+    yaml_file = utility_dir / f'{filename}.yaml'
+    with open(yaml_file) as file:
+        settings = yaml.full_load(file)
+    settings = schemas.FileSettings.parse_obj(settings)
+    
+    if not handler.hunt(filename, suffix, settings):
         return False
     return True
 
@@ -65,3 +71,10 @@ def sheet_to_yaml(filename: str, sheet: str) -> None:
     settings['sheet'] = sheet
     with open(yaml_file, 'w') as file:
         yaml.dump(settings, file)
+
+
+def settings_to_yaml(filename: str, settings: schemas.FileSettings):
+    yaml_file = utility_dir / f'{filename}.yaml'
+
+    with open(yaml_file, 'w') as file:
+        yaml.dump(settings.dict(), file)

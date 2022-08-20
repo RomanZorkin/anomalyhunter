@@ -3,6 +3,7 @@ import logging
 from flask import Blueprint, redirect, render_template, request, url_for
 
 from service.repos import files
+from service.schemas import FileSettings
 
 logger = logging.getLogger(__name__)
 
@@ -74,3 +75,25 @@ def file_settings():
         data=file_data.data,
         file={'name': filename, 'sheet': sheet},
     )
+
+
+@view.route('/settings/save', methods=['GET', 'POST'])
+def save_settings():
+    filename = request.args.get('filename')    
+    sheet = request.args.get('sheet')
+    base_column = request.form.get('base_col')
+    compare_column = request.form.get('compare_col')
+    precision = request.form.get('precision')
+
+    settings = FileSettings(
+        sheet=sheet,
+        base_column=base_column,
+        compare_column=compare_column,
+        precision=precision,
+    )
+    if not filename:
+        return render_template('mistake.html')
+
+    files.settings_to_yaml(filename, settings)
+    return redirect(url_for('files.file_card', filename=filename, suffix='.xlsx'))
+
