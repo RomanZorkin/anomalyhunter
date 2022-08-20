@@ -2,7 +2,9 @@
 
 {% block content %}
 
-<a href="{{ url_for('files.file_settings') }}?filename={{ file.name }}&suffix={{ file.suffix }}" class="btn btn-outline-danger btn-sm" role="button" aria-pressed="true">Открыть</a>
+{{ file.name }}
+{{ file.sheet }}
+
 
 <table class="table table-hover table-dark">
     <thead>

@@ -28,7 +28,13 @@ def get_files() -> list[ImportFiles]:
 
 
 def yaml_create(filename: str) -> bool:
-    data = [{'filename': f'{filename}'}]
+    data = {        
+        'sheet': False,
+        'base_column': False,
+        'compare_column': False,
+        'precision': 0,
+    }
+
     yaml_file = utility_dir / f'{filename}.yaml'
 
     with open(yaml_file, 'w') as file:

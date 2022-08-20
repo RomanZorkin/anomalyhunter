@@ -3,6 +3,24 @@
 {% block content %}
 
 
+
+<table class="table table-hover table-dark">
+    <thead>
+      <tr>
+        {% for sheet in sheets %}
+        <th scope="col">ЛИСТ EXCEL</th>
+        {% endfor %}        
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for sheet in sheets %}       
+        <td><a href="{{ url_for('files.file_settings') }}?filename={{ file.name }}&suffix={{ file.suffix }}&sheet={{ sheet }}">{{ sheet }}</a></td>
+        {% endfor %}        
+      </tr>      
+    </tbody>
+  </table>
+
 выбор вкладки
 
 выбор диапазона чтения таблицы
